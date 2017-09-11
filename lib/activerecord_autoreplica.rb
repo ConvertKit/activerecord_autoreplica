@@ -72,6 +72,7 @@ module AutoReplica
   def self.in_replica_context(handler_params, handler_class=ConnectionHandler)
     return yield if Thread.current[:autoreplica] # This method should not be reentrant
 
+    autoreplica_enabled = false
     original_connection_handler = ActiveRecord::Base.connection_handler
     custom_handler = handler_class.new(original_connection_handler, handler_params)
     begin
